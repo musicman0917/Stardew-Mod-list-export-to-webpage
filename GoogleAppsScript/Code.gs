@@ -53,27 +53,29 @@ function writeModListToSheet(mods, timestamp) {
 
   sheet.clear();
 
-  // Row 1: last-updated timestamp banner, merged across the four data columns.
+  // Row 1: last-updated timestamp banner, merged across the data columns.
   const lastUpdatedLabel = "Last updated: " + formatTimestamp(timestamp);
-  sheet.getRange(1, 1, 1, 4).merge().setValue(lastUpdatedLabel)
+  sheet.getRange(1, 1, 1, 5).merge().setValue(lastUpdatedLabel)
     .setFontWeight("bold")
     .setBackground("#4a86e8")
     .setFontColor("#ffffff");
 
   // Row 2: column headers.
-  const headers = ["Mod Name", "Author", "Version", "ID"];
+  const headers = ["Mod Name", "Author", "Version", "ID", "Mod Page"];
   sheet.getRange(2, 1, 1, headers.length)
     .setValues([headers])
     .setFontWeight("bold")
     .setBackground("#eeeeee");
 
-  // Row 3+: one row per mod.
+  // Row 3+: one row per mod. The link column uses a HYPERLINK formula when a URL is known
+  // (resolved by the mod from its SMAPI update keys), so it renders as a clickable link.
   if (mods.length > 0) {
     const rows = mods.map(mod => [
       mod.name || "",
       mod.author || "",
       mod.version || "",
-      mod.id || ""
+      mod.id || "",
+      mod.url ? `=HYPERLINK("${mod.url.replace(/"/g, '""')}", "Link")` : ""
     ]);
     sheet.getRange(3, 1, rows.length, headers.length).setValues(rows);
   }

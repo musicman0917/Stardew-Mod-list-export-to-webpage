@@ -95,11 +95,11 @@ void WriteMockSheet(ExportPayload payload)
     var sb = new StringBuilder();
     sb.AppendLine($"Last updated: {payload.Timestamp}");
     sb.AppendLine();
-    sb.AppendLine($"{"Mod Name",-30} {"Author",-20} {"Version",-10} ID");
-    sb.AppendLine(new string('-', 90));
+    sb.AppendLine($"{"Mod Name",-30} {"Author",-20} {"Version",-10} {"ID",-30} Mod Page");
+    sb.AppendLine(new string('-', 120));
 
     foreach (ModRecord mod in payload.Mods.OrderBy(m => m.Name, StringComparer.OrdinalIgnoreCase))
-        sb.AppendLine($"{mod.Name,-30} {mod.Author,-20} {mod.Version,-10} {mod.Id}");
+        sb.AppendLine($"{mod.Name,-30} {mod.Author,-20} {mod.Version,-10} {mod.Id,-30} {mod.Url}");
 
     File.WriteAllText(outputPath, sb.ToString());
 }

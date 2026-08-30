@@ -28,7 +28,9 @@ receives the data.
 2. It serializes that list (plus a UTC timestamp and an optional shared secret) to JSON.
 3. It POSTs the JSON to the Web App URL configured in `config.json`.
 4. The Apps Script clears the target sheet and rewrites it: a "Last updated" banner row,
-   a header row (`Mod Name | Author | Version | ID`), then one row per mod.
+   a header row (`Mod Name | Author | Version | ID | Mod Page`), then one row per mod. The
+   "Mod Page" link is resolved from the mod's SMAPI update keys (e.g. `Nexus:2400`,
+   `GitHub:owner/repo`) when it has one recognized; otherwise that cell is left blank.
 
 ## Testing locally (no game or Google account needed)
 

@@ -57,7 +57,8 @@ namespace StardewModListExporter
                     Id = mod.Manifest.UniqueID,
                     Name = mod.Manifest.Name,
                     Author = mod.Manifest.Author,
-                    Version = mod.Manifest.Version.ToString()
+                    Version = mod.Manifest.Version.ToString(),
+                    Url = ModPageUrlResolver.Resolve(mod.Manifest.UpdateKeys)
                 })
                 .ToList();
         }
