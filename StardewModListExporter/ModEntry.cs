@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using ModListExporter.Core;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -36,15 +33,19 @@ namespace StardewModListExporter
                 return;
             }
 
-            try
-            {
-                List<ModRecord> mods = this.GetLoadedMods();
-                await this.ExportModListAsync(mods);
-            }
-            catch (Exception ex)
-            {
-                this.Monitor.Log($"Failed to export mod list: {ex}", LogLevel.Error);
-            }
+            List<ModRecord> mods = this.GetLoadedMods();
+            ExportPayload payload = PayloadBuilder.Build(mods, this.Config.SharedSecret);
+
+            ExportResult result = await ModListUploader.ExportAsync(
+                HttpClient,
+                this.Config.WebAppUrl,
+                payload,
+                TimeSpan.FromSeconds(Math.Max(1, this.Config.TimeoutSeconds)));
+
+            if (result.Success)
+                this.Monitor.Log($"Exported {mods.Count} mods to Google Sheets.", LogLevel.Info);
+            else
+                this.Monitor.Log($"Mod list export failed (status {result.StatusCode}): {result.Error}", LogLevel.Error);
         }
 
         /// <summary>Collect the id, name, author, and version of every currently loaded mod.</summary>
@@ -58,58 +59,7 @@ namespace StardewModListExporter
                     Author = mod.Manifest.Author,
                     Version = mod.Manifest.Version.ToString()
                 })
-                .OrderBy(mod => mod.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
-        }
-
-        /// <summary>POST the mod list to the configured Google Apps Script Web App.</summary>
-        private async Task ExportModListAsync(List<ModRecord> mods)
-        {
-            var payload = new ExportPayload
-            {
-                Timestamp = DateTimeOffset.UtcNow.ToString("o"),
-                SharedSecret = this.Config.SharedSecret,
-                Mods = mods
-            };
-
-            string json = JsonSerializer.Serialize(payload);
-
-            using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(Math.Max(1, this.Config.TimeoutSeconds)));
-
-            HttpResponseMessage response = await HttpClient.PostAsync(this.Config.WebAppUrl, content, cts.Token);
-
-            if (response.IsSuccessStatusCode)
-                this.Monitor.Log($"Exported {mods.Count} mods to Google Sheets.", LogLevel.Info);
-            else
-                this.Monitor.Log($"Mod list export failed with status {(int)response.StatusCode} {response.ReasonPhrase}.", LogLevel.Error);
-        }
-
-        private class ModRecord
-        {
-            [JsonPropertyName("id")]
-            public string Id { get; set; } = "";
-
-            [JsonPropertyName("name")]
-            public string Name { get; set; } = "";
-
-            [JsonPropertyName("author")]
-            public string Author { get; set; } = "";
-
-            [JsonPropertyName("version")]
-            public string Version { get; set; } = "";
-        }
-
-        private class ExportPayload
-        {
-            [JsonPropertyName("timestamp")]
-            public string Timestamp { get; set; } = "";
-
-            [JsonPropertyName("sharedSecret")]
-            public string SharedSecret { get; set; } = "";
-
-            [JsonPropertyName("mods")]
-            public List<ModRecord> Mods { get; set; } = new();
         }
     }
 }
