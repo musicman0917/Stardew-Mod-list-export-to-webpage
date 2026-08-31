@@ -4,6 +4,10 @@ A SMAPI mod that automatically exports your active mod list to a Google Sheet
 every time Stardew Valley launches, plus the Google Apps Script Web App that
 receives the data.
 
+> **Just want to install and use this mod?** See [INSTALL.md](INSTALL.md) for a
+> step-by-step guide that doesn't assume any coding experience. Everything
+> below this point is for building the mod from source and developing it.
+
 ## Contents
 
 - `StardewModListExporter/` — the C# SMAPI mod
