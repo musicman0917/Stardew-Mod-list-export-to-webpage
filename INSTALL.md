@@ -70,8 +70,12 @@ the wrong Mods folder" problem, especially if you use Stardrop.
 
 ## Part 3: Connect the mod to your sheet
 
-**If you have Generic Mod Config Menu installed** (a very common mod that adds
-an in-game settings screen for other mods), this is the easy way:
+[Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) is
+completely **optional** — the mod works fine without it — but if you have it
+(or don't mind installing it), it turns this part into three clicks instead of
+hand-editing a settings file. Worth grabbing if you're not sure.
+
+**If you have Generic Mod Config Menu installed**, this is the easy way:
 
 1. Launch the game and open the pause menu → the mod settings icon (usually a
    gear/cog) → **Mod List Exporter**.
