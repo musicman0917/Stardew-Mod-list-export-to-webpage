@@ -70,6 +70,18 @@ the wrong Mods folder" problem, especially if you use Stardrop.
 
 ## Part 3: Connect the mod to your sheet
 
+**If you have Generic Mod Config Menu installed** (a very common mod that adds
+an in-game settings screen for other mods), this is the easy way:
+
+1. Launch the game and open the pause menu → the mod settings icon (usually a
+   gear/cog) → **Mod List Exporter**.
+2. Paste your Web App URL (from Part 2, step 11) into the **Web App URL**
+   field.
+3. Close the menu — it saves automatically.
+4. Skip to step 5 below.
+
+**If you don't have Generic Mod Config Menu**, edit the settings file by hand:
+
 1. Go back to your Mods folder and open the `StardewModListExporter` folder.
 2. Open `config.json` with a plain text editor (right-click → Open with →
    Notepad works fine — don't use Word).
@@ -86,6 +98,9 @@ the wrong Mods folder" problem, especially if you use Stardrop.
    ```
 4. Save the file (Ctrl+S) and close it. **Don't** touch `manifest.json` in the
    same folder — that's a different file the mod needs untouched.
+
+**Either way, finish here:**
+
 5. Launch the game again. Check the SMAPI console for a line like:
    ```
    Mod List Exporter | Exported 120 mods to Google Sheets.
@@ -109,7 +124,9 @@ sheet. If that worries you, add a simple password:
 2. Save, then **Deploy → Manage deployments → click the pencil (edit) icon →
    Version: New version → Deploy**. (A plain save does *not* update the live
    URL — you must create a new deployment version.)
-3. In `config.json`, set `"SharedSecret"` to that same word.
+3. Set the matching **Shared Secret** to that same word — either in the
+   in-game mod settings menu (if you have Generic Mod Config Menu) or by
+   editing `"SharedSecret"` in `config.json`.
 4. Save and relaunch the game.
 
 ---

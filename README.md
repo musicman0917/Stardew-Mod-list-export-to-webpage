@@ -24,6 +24,7 @@ receives the data.
 - `LocalMockServer/` — a tiny console app standing in for the Google Apps Script Web App, so
   you can test the full request/response round trip without deploying anything to Google
 - `GoogleAppsScript/Code.gs` — the real Web App that receives the POST and rewrites the sheet
+- `scripts/Release.ps1` — packages a distributable release zip (see "Distributing a release" below)
 
 ## How it works
 
@@ -89,6 +90,10 @@ generates `config.json` next to the mod's DLL, then edit that file:
 }
 ```
 
+If [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) is installed,
+these same settings are also exposed as an in-game menu (`ModEntry.SetUpGenericModConfigMenu`) —
+GMCM is an optional soft dependency, not required.
+
 ## Google Apps Script deployment
 
 1. Create (or open) the Google Sheet you want the mod list written to.
@@ -109,6 +114,23 @@ generates `config.json` next to the mod's DLL, then edit that file:
 Whenever you edit `Code.gs` after the first deployment, use **Deploy → Manage deployments →
 Edit (pencil icon) → New version** so the `/exec` URL picks up your changes — a plain save
 does not update a live deployment.
+
+## Distributing a release
+
+End users should never need to build this from source — hand them a pre-built zip and point
+them at [INSTALL.md](INSTALL.md). To produce that zip after building the game against your own
+local Stardew Valley/SMAPI install (a CI build isn't possible here since the game's DLLs are
+licensed content that can't be redistributed or fetched automatically):
+
+```powershell
+.\scripts\Release.ps1
+# or, to also create a GitHub Release (requires the `gh` CLI, authenticated):
+.\scripts\Release.ps1 -PublishToGitHub
+```
+
+This builds in Release configuration, finds the zip the mod build package already generates,
+and copies it to `dist/ModListExporter-v<version>.zip` (version read from `manifest.json`) —
+that's the file to upload to a GitHub Release, Nexus Mods, etc.
 
 ## Notes / limitations
 
