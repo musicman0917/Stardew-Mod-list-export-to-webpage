@@ -2,7 +2,7 @@
   "Name": "Mod List Exporter",
   "Author": "musicman0917",
   "Version": "1.0.0",
-  "Description": "Exports your active SMAPI mod list to a Google Sheet every time the game launches.",
+  "Description": "Exports your active SMAPI mod list to a Google Sheet every time the game launches. Get it at neighborhoodofmusic.com/products/sdv-export-mod-list-to-google-sheets.",
   "UniqueID": "musicman0917.ModListExporter",
   "EntryDll": "StardewModListExporter.dll",
   "MinimumApiVersion": "3.18.0",
