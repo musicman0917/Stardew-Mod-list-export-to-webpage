@@ -13,9 +13,9 @@ You need two things before starting:
 
 ## Part 1: Install the mod file
 
-1. Download the mod's zip file (wherever the person who gave you this sent you —
-   a Nexus Mods page, a Discord link, a GitHub Release, etc.). It should contain
-   a folder like `StardewModListExporter` with files inside it.
+1. Download the mod's zip file from
+   [neighborhoodofmusic.com/products/sdv-export-mod-list-to-google-sheets](https://neighborhoodofmusic.com/products/sdv-export-mod-list-to-google-sheets).
+   It should contain a folder like `StardewModListExporter` with files inside it.
 2. Find your **Mods folder**:
    - **If you install mods manually**: it's inside your Stardew Valley folder,
      e.g. `Stardew Valley\Mods`.
