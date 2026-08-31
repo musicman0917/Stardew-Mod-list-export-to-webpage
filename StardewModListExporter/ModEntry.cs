@@ -13,6 +13,10 @@ namespace StardewModListExporter
         /// <summary>Shared HTTP client for the mod's lifetime (HttpClient is meant to be reused, not disposed per call).</summary>
         private static readonly HttpClient HttpClient = new();
 
+        /// <summary>Where to point this mod's own row in the exported sheet. SMAPI's UpdateKeys only
+        /// recognizes specific sites (Nexus, GitHub, etc.), so a storefront link can't go there.</summary>
+        private const string ProductPageUrl = "https://neighborhoodofmusic.com/products/sdv-export-mod-list-to-google-sheets";
+
         private ModConfig Config = null!;
 
         public override void Entry(IModHelper helper)
@@ -109,7 +113,9 @@ namespace StardewModListExporter
                     Name = mod.Manifest.Name,
                     Author = mod.Manifest.Author,
                     Version = mod.Manifest.Version.ToString(),
-                    Url = ModPageUrlResolver.Resolve(mod.Manifest.UpdateKeys)
+                    Url = mod.Manifest.UniqueID == this.ModManifest.UniqueID
+                        ? ProductPageUrl
+                        : ModPageUrlResolver.Resolve(mod.Manifest.UpdateKeys)
                 })
                 .ToList();
         }
